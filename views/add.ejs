@@ -12,16 +12,16 @@
 
 <form action="/add" method="POST">
     <label>Kurskod:</label>
-    <input type="text" name="coursecode" value="<%= formData ? formData.coursecode : '' %>">
+    <input type="text" name="coursecode" value="<%= formData.coursecode || '' %>">
 
     <label>Kursnamn:</label>
-    <input type="text" name="coursename" value="<%= formData ? formData.coursename : '' %>">
+    <input type="text" name="coursename" value="<%= formData.coursename || '' %>">
 
     <label>Progression:</label>
-    <input type="text" name="progression" value="<%= formData ? formData.progression : '' %>">
+    <input type="text" name="progression" value="<%= formData.progression || '' %>">
 
     <label>Syllabus (länk):</label>
-    <input type="text" name="syllabus" value="<%= formData ? formData.syllabus : '' %>">
+    <input type="text" name="syllabus" value="<%= formData.syllabus || '' %>">
 
     <button type="submit">Lägg till</button>
 </form>

@@ -32,8 +32,13 @@ app.get('/courses', async (req, res) => {
 
 // Visa formuläret /add
 app.get('/add', (req, res) => {
-    res.render('add');
+    res.render('add', { 
+        title: "Lägg till kurs",
+        errors: [],
+        formData: {}
+    });
 });
+
 
 // Visa about-sidan
 app.get('/about', (req, res) => {
@@ -43,42 +48,28 @@ app.get('/about', (req, res) => {
 // Lägg till kurs - skicka tillbaka användarens tidigare input så de slipper skriva om allt
 app.post('/add', async (req, res) => {
     const { coursecode, coursename, progression, syllabus } = req.body;
-
-    // Serverside-validering
     let errors = [];
 
-    if (!coursecode || coursecode.trim() === '') {
-        errors.push("Kurskod saknas.");
-    }
+    if (!coursecode) errors.push("Kurskod saknas");
+    if (!coursename) errors.push("Kursnamn saknas");
+    if (!progression) errors.push("Progression saknas");
+    if (!syllabus) errors.push("Syllabus saknas");
 
-    if (!coursename || coursename.trim() === '') {
-        errors.push("Kursnamn saknas.");
-    }
-
-    if (!progression || !['A', 'B', 'C'].includes(progression.toUpperCase())) {
-        errors.push("Progression måste vara A, B eller C.");
-    }
-
-    if (!syllabus || syllabus.trim() === '') {
-        errors.push("Länk till kursplan saknas.");
-    }
-
-    // Om fel finns; rendera add.ejs igen med felmeddelanden
     if (errors.length > 0) {
         return res.render('add', {
             errors,
-            formData: { coursecode, coursename, progression, syllabus }
+            formData: req.body
         });
     }
 
-    // Om allt är OK; spara i databasen
     await pool.query(
-        'INSERT INTO courses (coursecode, coursename, progression, syllabus) VALUES ($1, $2, $3, $4)',
-        [coursecode, coursename, progression.toUpperCase(), syllabus]
+        "INSERT INTO courses (coursecode, coursename, progression, syllabus) VALUES ($1, $2, $3, $4)",
+        [coursecode, coursename, progression, syllabus]
     );
 
     res.redirect('/courses');
 });
+
 
 
 // Ta bort kurs
