@@ -9,7 +9,13 @@ app.set('views', __dirname + '/views');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.use(expressLayouts);
-app.set('layout', 'layout'); 
+app.set('layout', 'layout');
+app.use((req, res, next) => {
+    if (!res.locals.title) {
+        res.locals.title = "CV‑Databas";
+    }
+    next();
+}); 
 
 const pool = new Pool({
     user: 'postgres',
@@ -21,13 +27,16 @@ const pool = new Pool({
 
 // Startsida/Hem
 app.get('/', (req, res) => {
-    res.render('index');
+    res.render('index', { title: "Start" });
 });
 
 // Visa kurser
 app.get('/courses', async (req, res) => {
     const result = await pool.query('SELECT * FROM courses ORDER BY id DESC');
-    res.render('courses', { courses: result.rows });
+    res.render('courses', { 
+        title: "Kurser",
+        courses: result.rows 
+    });
 });
 
 // Visa formuläret /add
@@ -39,11 +48,11 @@ app.get('/add', (req, res) => {
     });
 });
 
-
 // Visa about-sidan
 app.get('/about', (req, res) => {
-    res.render('about');
+    res.render('about', { title: "Om mig" });
 });
+
 
 // Lägg till kurs - skicka tillbaka användarens tidigare input så de slipper skriva om allt
 app.post('/add', async (req, res) => {
@@ -57,6 +66,7 @@ app.post('/add', async (req, res) => {
 
     if (errors.length > 0) {
         return res.render('add', {
+            title: "Lägg till kurs",
             errors,
             formData: req.body
         });
@@ -71,14 +81,14 @@ app.post('/add', async (req, res) => {
 });
 
 
-
 // Ta bort kurs
 app.post('/delete/:id', async (req, res) => {
     const id = req.params.id;
     await pool.query('DELETE FROM courses WHERE id = $1', [id]);
 
-    res.redirect('/courses');
+    res.redirect('/courses?title=Kurser');
 });
+
 
 app.listen(3000, () => {
     console.log('Servern körs på http://localhost:3000');
