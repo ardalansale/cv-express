@@ -28,7 +28,7 @@ https://github.com/ardalansale/cv-express
 - PostgreSQL  
 - HTML, CSS  
 
-## Kör lokalt
+## Installation
 ```bash
 npm install
 node app.js
