@@ -36,22 +36,50 @@ app.get('/about', (req, res) => {
     res.render('about');
 });
 
-// Lägg till kurs
+// Lägg till kurs - skicka tillbaka användarens tidigare input så de slipper skriva om allt
 app.post('/add', async (req, res) => {
     const { coursecode, coursename, progression, syllabus } = req.body;
 
+    // Serverside-validering
+    let errors = [];
+
+    if (!coursecode || coursecode.trim() === '') {
+        errors.push("Kurskod saknas.");
+    }
+
+    if (!coursename || coursename.trim() === '') {
+        errors.push("Kursnamn saknas.");
+    }
+
+    if (!progression || !['A', 'B', 'C'].includes(progression.toUpperCase())) {
+        errors.push("Progression måste vara A, B eller C.");
+    }
+
+    if (!syllabus || syllabus.trim() === '') {
+        errors.push("Länk till kursplan saknas.");
+    }
+
+    // Om fel finns; rendera add.ejs igen med felmeddelanden
+    if (errors.length > 0) {
+        return res.render('add', {
+            errors,
+            formData: { coursecode, coursename, progression, syllabus }
+        });
+    }
+
+    // Om allt är OK; spara i databasen
     await pool.query(
         'INSERT INTO courses (coursecode, coursename, progression, syllabus) VALUES ($1, $2, $3, $4)',
-        [coursecode, coursename, progression, syllabus]
+        [coursecode, coursename, progression.toUpperCase(), syllabus]
     );
 
     res.redirect('/courses');
 });
 
+
 // Ta bort kurs
 app.post('/delete/:id', async (req, res) => {
     const id = req.params.id;
-
     await pool.query('DELETE FROM courses WHERE id = $1', [id]);
 
     res.redirect('/courses');

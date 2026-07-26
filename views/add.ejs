@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
+
     <h1>Lägg till kurs</h1>
 
     <nav>
@@ -14,18 +15,27 @@
         <a href="/about">Om mig</a>
     </nav>
 
+    <!-- Felbox -->
+    <% if (errors && errors.length > 0) { %>
+        <div class="error-box">
+            <% errors.forEach(error => { %>
+                <p class="error"><%= error %></p>
+            <% }) %>
+        </div>
+    <% } %>
+
     <form action="/add" method="POST">
         <label>Kurskod:</label>
-        <input type="text" name="coursecode" required>
+        <input type="text" name="coursecode" value="<%= formData ? formData.coursecode : '' %>">
 
         <label>Kursnamn:</label>
-        <input type="text" name="coursename" required>
+        <input type="text" name="coursename" value="<%= formData ? formData.coursename : '' %>">
 
         <label>Progression:</label>
-        <input type="text" name="progression" required>
+        <input type="text" name="progression" value="<%= formData ? formData.progression : '' %>">
 
         <label>Syllabus (länk):</label>
-        <input type="text" name="syllabus" required>
+        <input type="text" name="syllabus" value="<%= formData ? formData.syllabus : '' %>">
 
         <button type="submit">Lägg till</button>
     </form>
