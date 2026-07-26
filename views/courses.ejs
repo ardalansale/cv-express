@@ -1,23 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Kurser</title>
-    <link rel="stylesheet" href="/style.css">
-</head>
-<body>
-
-    <% layout('layout', { title: 'Kurser' }) %>
+<% title = "Kurser" %>
 
     <h1>Mina kurser</h1>
 
-    <nav>
-        <a href="/">Start</a>
-        <a href="/courses">Kurser</a>
-        <a href="/add">Lägg till kurs</a>
-        <a href="/about">Om mig</a>
-    </nav>
-
-    <table>
+    <table class="course-table">
         <tr>
         <th>Kurskod</th>
         <th>Kursnamn</th>
@@ -31,8 +16,7 @@
             <td><%= course.coursecode %></td>
             <td><%= course.coursename %></td>
             <td><%= course.progression %></td>
-            <td><%= course.syllabus %></td>
-            <td>
+            <td><a href="<%= course.syllabus %>" target="_blank">Länk</a></td>            <td>
             <form action="/delete/<%= course.id %>" method="POST">
                 <button type="submit">Ta bort</button>
             </form>
@@ -40,5 +24,3 @@
         </tr>
         <% }) %>
     </table>
-</body>
-</html>
