@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kurser</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h1>Mina kurser</h1>
+
+    <nav>
+        <a href="/">Start</a>
+        <a href="/courses">Kurser</a>
+        <a href="/add">Lägg till kurs</a>
+        <a href="/about">Om mig</a>
+    </nav>
+
+    <table>
+        <tr>
+        <th>Kurskod</th>
+        <th>Kursnamn</th>
+        <th>Progression</th>
+        <th>Syllabus</th>
+        <th>Ta bort</th>
+        </tr>
+
+        <% courses.forEach(course => { %>
+        <tr>
+            <td><%= course.coursecode %></td>
+            <td><%= course.coursename %></td>
+            <td><%= course.progression %></td>
+            <td><%= course.syllabus %></td>
+            <td>
+            <form action="/delete/<%= course.id %>" method="POST">
+                <button type="submit">Ta bort</button>
+            </form>
+            </td>
+        </tr>
+        <% }) %>
+    </table>
+</body>
+</html>

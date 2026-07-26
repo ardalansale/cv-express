@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lägg till kurs</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h1>Lägg till kurs</h1>
+
+    <nav>
+        <a href="/">Start</a>
+        <a href="/courses">Kurser</a>
+        <a href="/add">Lägg till kurs</a>
+        <a href="/about">Om mig</a>
+    </nav>
+
+    <form action="/add" method="POST">
+        <label>Kurskod:</label>
+        <input type="text" name="coursecode" required>
+
+        <label>Kursnamn:</label>
+        <input type="text" name="coursename" required>
+
+        <label>Progression:</label>
+        <input type="text" name="progression" required>
+
+        <label>Syllabus (länk):</label>
+        <input type="text" name="syllabus" required>
+
+        <button type="submit">Lägg till</button>
+    </form>
+</body>
+</html>
