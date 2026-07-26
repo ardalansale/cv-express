@@ -1,11 +1,15 @@
 const express = require('express');
+const expressLayouts = require('express-ejs-layouts');
 const { Pool } = require('pg');
+
 
 const app = express();
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
+app.use(expressLayouts);
+app.set('layout', 'layout'); 
 
 const pool = new Pool({
     user: 'postgres',
