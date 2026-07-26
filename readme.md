@@ -9,7 +9,7 @@ En webbapplikation för att hantera kurser i en CV‑databas.
 Byggd med Express, EJS och PostgreSQL.
 
 ## Publicerad webbplats
-*(körs lokalt via Node.js)*
+https://cv-express-9ovn.onrender.com
 
 ## GitHub‑repo
 https://github.com/ardalansale/cv-express
